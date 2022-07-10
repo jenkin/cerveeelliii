@@ -9,6 +9,71 @@
 	<body>
 		<tw-storydata name="Cerveeelliii" startnode="1" creator="Twine" creator-version="2.4.0" format="Iceman" format-version="2.2.0-1" ifid="BCE21ADF-05FB-40B5-BFBB-313498974356" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css"></style><script role="script" id="twine-user-script" type="text/twine-javascript">(function(s) {
   
+  State.events.on(
+    'show',
+    function(passageName) {
+      console.log("SHOW", s);
+      if (s.INTELLIGENCE_STEP_DOWN) {
+      	decreaseIntelligence(s.INTELLIGENCE_STEP_DOWN);
+      }
+    }
+  );
+
+  State.events.on(
+    'start',
+    function(passageName) {
+      
+      console.log("START");
+      
+      // Global constants
+      
+      // Intelligence constants
+      s.INTELLIGENCE_MAX = 100;
+      s.INTELLIGENCE_MIN = 1;
+      s.INTELLIGENCE_STEP_DOWN = 10;
+      s.INTELLIGENCE_STEP_UP = 10;
+      s.INTELLIGENCE_START = 90;
+      s.INTELLIGENCE_LEVELS = {
+        "lo": 10,
+        "ml": 25,
+        "mh": 75,
+        "hi": s.INTELLIGENCE_MAX
+      }
+
+      // Health constants
+      s.HEALTH_MAX = 100;
+      s.HEALTH_MIN = 0;
+      s.HEALTH_STEP_DOWN = 5;
+      s.HEALTH_STEP_UP = 0;
+      s.HEALTH_START = s.HEALTH_MAX;
+      s.DAMAGE_FACTORS = {
+        "lo": 1,
+        "ml": 1.5,
+        "mh": 2,
+        "hi": 5
+      }
+
+      // Initialization
+      setIntelligence(s.INTELLIGENCE_START);
+      setHealth(s.HEALTH_START);
+      
+      // Global methods
+      
+      // Eating brains
+      s.gnam = function(n) {
+        increaseIntelligence(s.INTELLIGENCE_STEP_UP * n);
+      }
+
+      // Suffer damages
+      s.ouch = function(n) {
+        decreaseHealth(s.HEALTH_STEP_DOWN * s.DAMAGE_FACTORS[s.l] * n);
+      }
+
+    }
+  );
+
+  // Utilities
+  
   function updateLevel() {
     
     let levels = Object
@@ -42,21 +107,25 @@
     amount = 0
   ) {
 
-    s.i += amount;
+    var i = s.i;
+    
+    i += amount;
 
-    s.i = Math.max(
+    i = Math.max(
       s.INTELLIGENCE_MIN,
-      s.i
+      i
     );
 
-    s.i = Math.min(
+    i = Math.min(
       s.INTELLIGENCE_MAX,
-      s.i
+      i
     );
+    
+    s.i = i;
 
     updateLevel();
 
-    return s.i;
+    return i;
   }
   
   function setIntelligence(
@@ -82,19 +151,23 @@
     amount = 0
   ) {
 
-    s.h += amount;
+    var h = s.h;
+    
+    h += amount;
 
-    s.h = Math.max(
+    h = Math.max(
       s.HEALTH_MIN,
-      s.h
+      h
     );
 
-    s.h = Math.min(
+    h = Math.min(
       s.HEALTH_MAX,
-      s.h
+      h
     );
+    
+    s.h = h;
 
-    return s.h;
+    return h;
   }
 
   function setHealth(
@@ -103,63 +176,6 @@
     if (amount) s.h = amount;
     return updateHealth();
   }
-
-  State.events.on(
-    'start',
-    function(passageName) {
-      
-      console.log("START");
-      
-      s.INTELLIGENCE_MAX = 100;
-      s.INTELLIGENCE_MIN = 1;
-      s.INTELLIGENCE_STEP_DOWN = 10;
-      s.INTELLIGENCE_STEP_UP = 10;
-      s.INTELLIGENCE_START = 90;
-
-      s.INTELLIGENCE_LEVELS = {
-        "lo": 10,
-        "ml": 25,
-        "mh": 75,
-        "hi": s.INTELLIGENCE_MAX
-      }
-
-      setIntelligence(s.INTELLIGENCE_START);
-
-      s.HEALTH_MAX = 100;
-      s.HEALTH_MIN = 0;
-      s.HEALTH_STEP_DOWN = 5;
-      s.HEALTH_STEP_UP = 0;
-      s.HEALTH_START = s.HEALTH_MAX;
-
-      s.DAMAGE_FACTORS = {
-        "lo": 1,
-        "ml": 1.5,
-        "mh": 2,
-        "hi": 5
-      }
-
-      setHealth(s.HEALTH_START);
-      
-      s.eatBrain = function(n) {
-        increaseIntelligence(s.INTELLIGENCE_STEP_UP * n);
-      }
-
-      s.sufferDamage = function(n) {
-        decreaseHealth(s.HEALTH_STEP_DOWN * s.DAMAGE_FACTORS[s.l] * n);
-      }
-
-    }
-  );
-
-  State.events.on(
-    'show',
-    function(passageName) {
-      console.log("SHOW");
-      if (s.INTELLIGENCE_STEP_DOWN) {
-      	decreaseIntelligence(s.INTELLIGENCE_STEP_DOWN);
-      }
-    }
-  );
 
 })(window.story.state);</script><tw-passagedata pid="1" name="Inizio" tags="" position="675,1150" size="100,100">La mia intelligenza è &lt;%= s.i %&gt;. La mia salute è &lt;%= s.h %&gt;.
 
@@ -171,16 +187,12 @@ Grr ckjnie hmmm... [[burp|Inizio]]!
 &lt;% } else if (s.l === &quot;ml&quot;) { %&gt;
 Mi faccio un grrr caracollando e trfff all&#39;[[inizio|Inizio]].
 &lt;% } else if (s.l === &quot;mh&quot;) { %&gt;
-Mi faccio un giro riflettendo sui fatti miei e torno all&#39;[[inizio|Inizio]]. O mangio un [[cervello|Gnam]]! O mi [[butto|Finestra]] dalla finestra.
+Mi faccio un giro riflettendo sui fatti miei e torno all&#39;[[inizio|Inizio]]. O mangio un [[cervello|Gnam][s.gnam(5)]]! O mi [[butto|Finestra][s.ouch(5)]] dalla finestra.
 &lt;% } else if (s.l === &quot;hi&quot;) { %&gt;
 Mi faccio un giro riflettendo sull&#39;infinito e torno all&#39;[[inizio|Inizio]].
-&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="3" name="Gnam" tags="" position="675,1400" size="100,100">&lt;% s.eatBrain(5) %&gt;
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="3" name="Gnam" tags="" position="675,1400" size="100,100">Gnam, buono!
 
-Gnam, buono!
-
-Torno all&#39;[[inizio|Inizio]].</tw-passagedata><tw-passagedata pid="4" name="Finestra" tags="" position="800,1400" size="100,100">&lt;% s.sufferDamage(5) %&gt;
-
-Urca, che botta!
+Torno all&#39;[[inizio|Inizio]].</tw-passagedata><tw-passagedata pid="4" name="Finestra" tags="" position="800,1400" size="100,100">Urca, che botta!
 
 Torno all&#39;[[inizio|Inizio]].</tw-passagedata></tw-storydata>
 		<tw-story>
@@ -22603,25 +22615,25 @@ class Markdown {
   static parse (text) {
     const rules = [
       // [[rename|destination][onclick]]
-      [/\[\[(.*?)\|(.*?)\]\[(.*?)\]\]/g, '<tw-link role="link" onclick="$3" data-passage="$2">$1</tw-link>'],
+      [/\[\[(.*?)\|(.*?)\](?:\[(.*?)\])?\]/g, (m, p1, p2, p3 = '') => `<tw-link role="link" onclick="${p3.replaceAll('s.', 'window.story.state.')}" data-passage="${p2}">${p1}</tw-link>`],
       // [[rename|destination]]
-      [/\[\[(.*?)\|(.*?)\]\]/g, '<tw-link role="link" data-passage="$2">$1</tw-link>'],
+      // [/\[\[(.*?)\|(.*?)\]\]/g, '<tw-link role="link" data-passage="$2">$1</tw-link>'],
       // [[rename->dest][onclick]]
-      [/\[\[(.*?)->(.*?)\]\[(.*?)\]\]/g, '<tw-link role="link" onclick="$3" data-passage="$2">$1</tw-link>'],
+      [/\[\[(.*?)->(.*?)\](?:\[(.*?)\])?\]/g, (m, p1, p2, p3 = '') => `<tw-link role="link" onclick="${p3.replaceAll('s.', 'window.story.state.')}" data-passage="${p2}">${p1}</tw-link>`],
       // [[rename->dest]]
-      [/\[\[(.*?)->(.*?)\]\]/g, '<tw-link role="link" data-passage="$2">$1</tw-link>'],
+      // [/\[\[(.*?)->(.*?)\]\]/g, '<tw-link role="link" data-passage="$2">$1</tw-link>'],
       // [[dest<-rename][onclick]]
-      [/\[\[(.*?)<-(.*?)\]\[(.*?)\]\]/g, '<tw-link role="link" onclick="$3" data-passage="$1">$2</tw-link>'],
+      [/\[\[(.*?)<-(.*?)\](?:\[(.*?)\])?\]/g, (m, p1, p2, p3 = '') => `<tw-link role="link" onclick="${p3.replaceAll('s.', 'window.story.state.')}" data-passage="${p1}">${p2}</tw-link>`],
       // [[dest<-rename]]
-      [/\[\[(.*?)<-(.*?)\]\]/g, '<tw-link role="link" data-passage="$1">$2</tw-link>'],
+      // [/\[\[(.*?)<-(.*?)\]\]/g, '<tw-link role="link" data-passage="$1">$2</tw-link>'],
       // [[destination][onclick]]
-      [/\[\[(.*?)\]\[(.*?)\]\]/g, '<tw-link role="link" onclick="$2" data-passage="$1">$1</tw-link>'],
+      [/\[\[(.*?)\](?:\[(.*?)\])?\]/g, (m, p1, p2 = '') => `<tw-link role="link" onclick="${p2.replaceAll('s.', 'window.story.state.')}" data-passage="${p1}">${p1}</tw-link>`]
       // [[destination]]
-      [/\[\[(.*?)\]\]/g, '<tw-link role="link" data-passage="$1">$1</tw-link>']
+      // [/\[\[(.*?)\]\]/g, '<tw-link role="link" data-passage="$1">$1</tw-link>']
     ];
 
     rules.forEach(([rule, template]) => {
-      text = text.replaceAll(rule, template).replaceAll("s.", "window.story.state.");
+      text = text.replaceAll(rule, template);
     });
 
     return text;
@@ -23217,8 +23229,14 @@ class Story {
     // Add to the history.
     History.add(passage.name);
 
-    // Show starting passage.
-    this.show(passage.name);
+    // Set the global passage to the one about to be shown.
+    window.passage = passage;
+
+    // Overwrite current tags
+    this.passageElement.attr('tags', passage.tags);
+
+    // Overwrite the parsed with the rendered.
+    this.passageElement.html(this.render(passage.name));
 
     /**
      * Triggered when the story starts
