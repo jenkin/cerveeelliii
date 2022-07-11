@@ -1,0 +1,193 @@
+<tw-storydata name="Cerveeelliii di Lisa" startnode="1" creator="Twine" creator-version="2.4.0" format="Iceman" format-version="3.0.0-1" ifid="LCE21ADF-05FB-40B5-BFBB-313498974356" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css"></style><script role="script" id="twine-user-script" type="text/twine-javascript">(function(s) {
+  
+  State.events.on(
+    'show',
+    function(passageName) {
+      console.log("SHOW", s);
+      if (s.INTELLIGENCE_STEP_DOWN) {
+      	decreaseIntelligence(s.INTELLIGENCE_STEP_DOWN);
+      }
+    }
+  );
+
+  State.events.on(
+    'start',
+    function(passageName) {
+      
+      console.log("START");
+      
+      // Global constants
+      
+      // Intelligence constants
+      s.INTELLIGENCE_MAX = 100;
+      s.INTELLIGENCE_MIN = 1;
+      s.INTELLIGENCE_STEP_DOWN = 10;
+      s.INTELLIGENCE_STEP_UP = 10;
+      s.INTELLIGENCE_START = 90;
+      s.INTELLIGENCE_LEVELS = {
+        "lo": 10,
+        "ml": 25,
+        "mh": 75,
+        "hi": s.INTELLIGENCE_MAX
+      }
+
+      // Health constants
+      s.HEALTH_MAX = 100;
+      s.HEALTH_MIN = 0;
+      s.HEALTH_STEP_DOWN = 5;
+      s.HEALTH_STEP_UP = 0;
+      s.HEALTH_START = s.HEALTH_MAX;
+      s.DAMAGE_FACTORS = {
+        "lo": 1,
+        "ml": 1.5,
+        "mh": 2,
+        "hi": 5
+      }
+
+      // Initialization
+      setIntelligence(s.INTELLIGENCE_START);
+      setHealth(s.HEALTH_START);
+      
+      // Global methods
+      
+      // Eating brains
+      s.gnam = function(n) {
+        increaseIntelligence(s.INTELLIGENCE_STEP_UP * n);
+      }
+
+      // Suffer damages
+      s.ouch = function(n) {
+        decreaseHealth(s.HEALTH_STEP_DOWN * s.DAMAGE_FACTORS[s.l] * n);
+      }
+
+    }
+  );
+
+  // Utilities
+  
+  function updateLevel() {
+    
+    let levels = Object
+      .entries(s.INTELLIGENCE_LEVELS)
+      .sort(([,a],[,b]) => a-b);
+    
+    for (let l of levels) {
+      if (s.i < l[1]) {
+        s.l = l[0];
+        break;
+      }
+    }
+    
+    return s.l;
+
+  }
+
+  function increaseIntelligence(
+    amount = 0
+  ) {
+    return updateIntelligence(amount);
+  }
+
+  function decreaseIntelligence(
+    amount = 0
+  ) {
+    return updateIntelligence(-amount);
+  }
+
+  function updateIntelligence(
+    amount = 0
+  ) {
+
+    var i = s.i;
+    
+    i += amount;
+
+    i = Math.max(
+      s.INTELLIGENCE_MIN,
+      i
+    );
+
+    i = Math.min(
+      s.INTELLIGENCE_MAX,
+      i
+    );
+    
+    s.i = i;
+
+    updateLevel();
+
+    return i;
+  }
+  
+  function setIntelligence(
+    amount
+  ) {
+    if (amount) s.i = amount;
+    return updateIntelligence();
+  }
+
+  function increaseHealth(
+    amount = 0
+  ) {
+    return updateHealth(amount);
+  }
+
+  function decreaseHealth(
+    amount = 0
+  ) {
+    return updateHealth(-amount);
+  }
+
+  function updateHealth(
+    amount = 0
+  ) {
+
+    var h = s.h;
+    
+    h += amount;
+
+    h = Math.max(
+      s.HEALTH_MIN,
+      h
+    );
+
+    h = Math.min(
+      s.HEALTH_MAX,
+      h
+    );
+    
+    s.h = h;
+
+    return h;
+  }
+
+  function setHealth(
+    amount
+  ) {
+    if (amount) s.h = amount;
+    return updateHealth();
+  }
+
+})(window.story.state);</script><tw-passagedata pid="1" name="Inizio" tags="" position="675,1150" size="100,100">&lt;% if (s.i &amp;&amp; s.h) { %&gt;
+La mia intelligenza è &lt;%= s.i %&gt;. La mia salute è &lt;%= s.h %&gt;.
+&lt;% } %&gt;
+
+[[Vai avanti|Secondo passaggio]].
+</tw-passagedata><tw-passagedata pid="2" name="Secondo passaggio" tags="" position="675,1275" size="100,100">La mia intelligenza è &lt;%= s.i %&gt;. La mia salute è &lt;%= s.h %&gt;.
+
+&lt;% if (s.l === &quot;lo&quot;) { %&gt;
+Grr ckjnie hmmm... [[burp|Inizio]]!
+&lt;% } else if (s.l === &quot;ml&quot;) { %&gt;
+Mi faccio un grrr caracollando e trfff all&#39;[[inizio|Inizio]].
+&lt;% } else if (s.l === &quot;mh&quot;) { %&gt;
+Mi faccio un giro riflettendo sui fatti miei e torno all&#39;[[inizio|Inizio]]. O mangio un [[cervello|Gnam][s.gnam(5)]]! O mi [[butto|Finestra][s.ouch(5)]] dalla finestra.
+&lt;% } else if (s.l === &quot;hi&quot;) { %&gt;
+Mi faccio un giro riflettendo sull&#39;infinito e torno all&#39;[[inizio|Inizio]].
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="3" name="Gnam" tags="" position="675,1400" size="100,100">Gnam, buono!
+
+Torno all&#39;[[inizio|Inizio]].</tw-passagedata><tw-passagedata pid="4" name="Finestra" tags="" position="800,1400" size="100,100">Urca, che botta!
+
+Torno all&#39;[[inizio|Inizio]].
+
+Oppure proseguo con la storia di [[Lisa]], [[Enrico]] o [[Alessio]].</tw-passagedata><tw-passagedata pid="5" name="Lisa" tags="" position="1375,1550" size="100,100">Questo è il passaggio di Lisa che [[prosegue|Storia di Lisa]]...
+</tw-passagedata><tw-passagedata pid="6" name="Enrico" tags="" position="737.5,1650" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="Alessio" tags="" position="862.5,1650" size="100,100"></tw-passagedata><tw-passagedata pid="8" name="Storia di Lisa" tags="" position="1250,1675" size="100,100">Torno all&#39;[[inizio|Inizio]].</tw-passagedata></tw-storydata>
