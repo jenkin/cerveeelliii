@@ -1,4 +1,5 @@
-<tw-storydata name="Cerveeelliii di Lisa" startnode="1" creator="Twine" creator-version="2.4.0" format="Iceman" format-version="3.0.0-1" ifid="LCE21ADF-05FB-40B5-BFBB-313498974356" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css"></style><script role="script" id="twine-user-script" type="text/twine-javascript">(function(s) {
+<tw-storydata name="Cerveeelliii" startnode="1" creator="Twine" creator-version="2.4.0" format="Iceman" format-version="3.0.0-1" ifid="BCE21ADF-05FB-40B5-BFBB-313498974356" options="" tags="" zoom="0.6" hidden><style role="stylesheet" id="twine-user-stylesheet" type="text/twine-css">
+ </style><script role="script" id="twine-user-script" type="text/twine-javascript">(function(s) {
   
   State.events.on(
     'show',
@@ -30,6 +31,14 @@
         "mh": 75,
         "hi": s.INTELLIGENCE_MAX
       }
+      s.BRAIN_FACTORS = {
+        0: 0, // zero nutrienti
+        1: 1, // nutri-score A, poco nutriente
+        2: 1, // nutri-score B
+        3: 1, // nutri-score C
+        4: 1, // nutri-score D
+        5: 1 // nutri-score E, molto nutriente
+      };
 
       // Health constants
       s.HEALTH_MAX = 100;
@@ -43,21 +52,56 @@
         "mh": 2,
         "hi": 5
       }
+      
+      // Damages
+      s.DAMAGES = {
+        
+        "bop": 1, // uno schiaffone
+        "jab": 1, // un dito in un occhio
+        "bonk": 1, // un pugno in faccia
+        "pwam": 1, // un pugno in testa
+        "katum": 1, // un calcio in faccia
+        
+        "stonk": 1, // una randellata in testa
+        "thud": 1, // colpo in testa con corpo contundente
+        
+        "glom": 1, // una dose di veleno
+        
+        "puf": 1, // caduta ordinata da un metro
+        "patapum": 1, // caduta rovinosa da un metro
+        
+        "bang": 1, // un colpo di pistola
+        "pam": 1, // un colpo di fucile
+        "ratatata": 1, // una sventagliata di mitra
+        
+        "boom": 1, // esplosione di una piccola bomba
+        "kaboom": 1, // esplosione di una grossa bomba
+        
+      };
 
       // Initialization
       setIntelligence(s.INTELLIGENCE_START);
       setHealth(s.HEALTH_START);
       
+      
       // Global methods
       
       // Eating brains
-      s.gnam = function(n) {
-        increaseIntelligence(s.INTELLIGENCE_STEP_UP * n);
+      s.gnam = function(m = 3, n = 1) {
+        increaseIntelligence(s.INTELLIGENCE_STEP_UP * m * n);
       }
 
       // Suffer damages
-      s.ouch = function(n) {
-        decreaseHealth(s.HEALTH_STEP_DOWN * s.DAMAGE_FACTORS[s.l] * n);
+      s.ouch = function(m = 1, n = 1) {
+        var intensity = typeof m === 'string' ? (s.DAMAGES[m] ?? 1) : m;
+        decreaseHealth(s.HEALTH_STEP_DOWN * s.DAMAGE_FACTORS[s.l] * intensity * n);
+      }
+      
+      // Custom damages as functions
+      for (let k in s.DAMAGES) {
+        s[k] = function(n) {
+          s.ouch(k, n);
+        }
       }
 
     }
@@ -168,26 +212,40 @@
     return updateHealth();
   }
 
-})(window.story.state);</script><tw-passagedata pid="1" name="Inizio" tags="" position="675,1150" size="100,100">&lt;% if (s.i &amp;&amp; s.h) { %&gt;
-La mia intelligenza è &lt;%= s.i %&gt;. La mia salute è &lt;%= s.h %&gt;.
-&lt;% } %&gt;
+})(window.story.state);</script><tw-passagedata pid="1" name="incipit" tags="laboratory alessio" position="1950,1275" size="100,100">Corri, CORRI, CORRIIII!!!
 
-[[Vai avanti|Secondo passaggio]].
-</tw-passagedata><tw-passagedata pid="2" name="Secondo passaggio" tags="" position="675,1275" size="100,100">La mia intelligenza è &lt;%= s.i %&gt;. La mia salute è &lt;%= s.h %&gt;.
+La porta dietro di noi è chiusa, davanti a noi c&#39;è la salvezza... ESCONO DALLE FOTTUTE PARETI!
 
-&lt;% if (s.l === &quot;lo&quot;) { %&gt;
-Grr ckjnie hmmm... [[burp|Inizio]]!
+Ecco, fuori, ci siamo! Luce, sole, calore sulla pelle... un dolore lancinante sul collo, una sensazione di umido che cola sulla spalla, mi gira la testa.
+
+Cosa... mi... sta... succedendo... grom... [[argh|incipit.first_time_zombie]]... [[ghuen|incipit.first_time_zombie]]... [[grut|incipit.first_time_zombie]]!
+</tw-passagedata><tw-passagedata pid="2" name="incipit.first_time_zombie" tags="square alessio" position="1950,1400" size="100,100">&lt;% if (s.l === &quot;lo&quot;) { %&gt;
+Grr ckjnie hmmm [[trfgs|incipit.first_brain][s.gnam(2)]] sgrund [[craaab|incipit.first_brain][s.gnam(4)]] grrral tochh [[klutggd|incipit.first_brain][s.gnam(3)]] sgraul!
 &lt;% } else if (s.l === &quot;ml&quot;) { %&gt;
-Mi faccio un grrr caracollando e trfff all&#39;[[inizio|Inizio]].
+Vedo ckjnie hmmm [[cervello|incipit.first_brain][s.gnam(2)]] sgrund [[persona viva|incipit.first_brain][s.gnam(4)]] grrral piccola [[klutggd|incipit.first_brain][s.gnam(3)]] sgraul.!
 &lt;% } else if (s.l === &quot;mh&quot;) { %&gt;
-Mi faccio un giro riflettendo sui fatti miei e torno all&#39;[[inizio|Inizio]]. O mangio un [[cervello|Gnam][s.gnam(5)]]! O mi [[butto|Finestra][s.ouch(5)]] dalla finestra.
+Vedo intorno a me delle persone, ma di loro faccio caso solo al [[cervello|incipit.first_brain][s.gnam(2)]], mi basta che quella sia una [[persona viva|incipit.first_brain][s.gnam(4)]] e inseguo anche la più piccola [[occasione|incipit.first_brain][s.gnam(3)]] per mangiare.
 &lt;% } else if (s.l === &quot;hi&quot;) { %&gt;
-Mi faccio un giro riflettendo sull&#39;infinito e torno all&#39;[[inizio|Inizio]].
-&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="3" name="Gnam" tags="" position="675,1400" size="100,100">Gnam, buono!
+Ho fame. Tanta fame. Solo fame. Attorno a me vedo delle persone, ma di loro mi interessa solo il fatto che contengono un [[cervello|incipit.first_brain][s.gnam(2)]], mi basta che quella sia una [[persona viva|incipit.first_brain][s.gnam(4)]] e inseguo anche la più piccola [[occasione|incipit.first_brain][s.gnam(3)]] per mangiare.
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="3" name="incipit.first_brain" tags="square alessio" position="1950,1525" size="100,100">&lt;% if (s.l === &quot;lo&quot;) { %&gt;
+Fuer sgrrr ghek stag. Artf frut sgram [[grot manghf|square]], grol fgham stud.
+&lt;% } else if (s.l === &quot;ml&quot;) { %&gt;
+Mangiato sgrrr ghek cervello. Artf frut sgram [[piazza circolare|square]], grol fgham stud.
+&lt;% } else if (s.l === &quot;mh&quot;) { %&gt;
+Sono sazio e al centro di una [[piazza circolare|square]], attorno a me un grande anello stradale.
+&lt;% } else if (s.l === &quot;hi&quot;) { %&gt;
+Ho mangiato il mio primo cervello. Mi rendo conto che sono in una [[piazza circolare|square]], al centro di un grande anello stradale.
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="4" name="square" tags="square alessio" position="1950,1650" size="100,100">&lt;% if (s.l === &quot;lo&quot;) { %&gt;
+Sgrom grak cartello trumg strac. Greft andare prot [[gref|church]], [[roft|hardware]], [[grwue|restaurant]], [[sdeft|hospice]], [[ruong|school]], [[plerds|hospital]], [[vuorft|jail]], [[mergf|market]], [[wesdfg|laboratory]].
+&lt;% } else if (s.l === &quot;ml&quot;) { %&gt;
+Sgrom grak cartello trumg strac. Greft andare prot [[chiesa|church]], [[ferramenta|hardware]], [[ristorante|restaurant]], &#39;[[ospizio|hospice]], [[scuola|school]], [[ospedale|hospital]], [[prigione|jail]], [[mercato|market]], [[laboratorio|laboratory]].
+&lt;% } else if (s.l === &quot;mh&quot;) { %&gt;
+Ho davanti a me un cartello con tante frecce e nomi di luoghi. Posso andare alla [[chiesa|church]], al [[ferramenta|hardware]], al [[ristorante|restaurant]], all&#39;[[ospizio|hospice]], alla [[scuola|school]], all&#39;[[ospedale|hospital]], alla [[prigione|jail]], al [[mercato|market]] o al [[laboratorio|laboratory]].
+&lt;% } else if (s.l === &quot;hi&quot;) { %&gt;
+Ho davanti a me un cartello con tante frecce e nomi di luoghi. Posso andare alla [[chiesa|church]], al [[ferramenta|hardware]], al [[ristorante|restaurant]], all&#39;[[ospizio|hospice]], alla [[scuola|school]], all&#39;[[ospedale|hospital]], alla [[prigione|jail]], al [[mercato|market]] o al [[laboratorio|laboratory]].
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="5" name="PASSAGE TEMPLATE" tags="" position="1950,1150" size="100,100">&lt;% if (s.l === &quot;lo&quot;) { %&gt;
+&lt;% } else if (s.l === &quot;ml&quot;) { %&gt;
+&lt;% } else if (s.l === &quot;mh&quot;) { %&gt;
+&lt;% } else if (s.l === &quot;hi&quot;) { %&gt;
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="6" name="church" tags="church" position="2175,2650" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="hardware" tags="hardware" position="2675,850" size="100,100"></tw-passagedata><tw-passagedata pid="8" name="restaurant" tags="restaurant" position="1100,875" size="100,100"></tw-passagedata><tw-passagedata pid="9" name="hospice" tags="hospice" position="1725,3200" size="100,100"></tw-passagedata><tw-passagedata pid="10" name="school" tags="school" position="2875,1350" size="100,100"></tw-passagedata><tw-passagedata pid="11" name="hospital" tags="hospital" position="1100,1600" size="100,100"></tw-passagedata><tw-passagedata pid="12" name="jail" tags="jail" position="2850,2950" size="100,100"></tw-passagedata><tw-passagedata pid="13" name="market" tags="market" position="2950,2150" size="100,100"></tw-passagedata><tw-passagedata pid="14" name="laboratory" tags="laboratory" position="1100,2550" size="100,100"></tw-passagedata><tw-passagedata pid="15" name="cemetery" tags="cemetery" position="3025,1350" size="100,100"></tw-passagedata></tw-storydata>
 
-Torno all&#39;[[inizio|Inizio]].</tw-passagedata><tw-passagedata pid="4" name="Finestra" tags="" position="800,1400" size="100,100">Urca, che botta!
-
-Torno all&#39;[[inizio|Inizio]].
-
-Oppure proseguo con la storia di [[Lisa]], [[Enrico]] o [[Alessio]].</tw-passagedata><tw-passagedata pid="5" name="Lisa" tags="" position="1375,1550" size="100,100">Questo è il passaggio di Lisa che [[prosegue|Storia di Lisa]]...
-</tw-passagedata><tw-passagedata pid="6" name="Enrico" tags="" position="737.5,1650" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="Alessio" tags="" position="862.5,1650" size="100,100"></tw-passagedata><tw-passagedata pid="8" name="Storia di Lisa" tags="" position="1250,1675" size="100,100">Torno all&#39;[[inizio|Inizio]].</tw-passagedata></tw-storydata>
