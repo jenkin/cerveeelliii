@@ -10,12 +10,37 @@ parser.add_argument(
     help = "Story ID ('ifid' attribute of <tw-storydata>)",
     required = True
 )
+
+strategies = {
+    "never": lambda n, p: n not in story_passages,
+    "is_empty": lambda n, p: n not in story_passages or not story_passages[n].get_text(),
+    "is_changed": lambda n, p: n not in story_passages or story_passages[n].get_text() != p.get_text(),
+    "has_tag": lambda n, p: n not in story_passages or args.tag in p.get("tags").split(),
+    "always": lambda n, p: True
+}
+
+parser.add_argument(
+    "-w", "--strategy",
+    dest = "strategy",
+    help = "Passage overwrite strategy",
+    choices = strategies.keys(),
+    default = "is_empty"
+)
+
+parser.add_argument(
+    "-t", "--tag",
+    dest = "tag",
+    help = "Tag to apply 'has_tag' strategy",
+    default = "update"
+)
+
 parser.add_argument(
     "-o", "--output",
     dest = "output_filename",
     help = "Output filename (Twine 2 archive)",
     required = True
 )
+
 parser.add_argument(
     "-i", "--input",
     dest = "input_filenames",
@@ -60,8 +85,8 @@ for filename in args.input_filenames:
                 for passage in story.find_all("tw-passagedata"):
                     # Passage name is the unique identifier of passage
                     passage_name = passage.get("name")
-                    # Overwriting is allowed only if previous passage was empty
-                    if passage_name not in story_passages or not story_passages[passage_name].get_text():
+                    # Apply strategy for passage overwriting
+                    if strategies[args.strategy](passage_name, passage):
                         story_passages[passage_name] = passage
 # End loop on input files
 # Now story_passages containes all passages from all stories
