@@ -112,6 +112,13 @@
           s.ouch(k, n);
         }
       }
+      
+      // DEBUG methods
+      s.debug = {
+        setIntelligence,
+        setHealth,
+        noop: function() {}
+      }
 
     }
   );
@@ -252,11 +259,64 @@ Sgrom grak cartello trumg strac. Greft andare prot [[chiesa|church]], [[ferramen
 Ho davanti a me un cartello con tante frecce e nomi di luoghi. Posso andare alla [[chiesa|church]], al [[ferramenta|hardware]], al [[ristorante|restaurant]], all&#39;[[ospizio|hospice]], alla [[scuola|school]], all&#39;[[ospedale|hospital]], alla [[prigione|jail]], al [[mercato|market]] o al [[laboratorio|laboratory]].
 &lt;% } else if (s.l === &quot;hi&quot;) { %&gt;
 Ho davanti a me un cartello con tante frecce e nomi di luoghi. Posso andare alla [[chiesa|church]], al [[ferramenta|hardware]], al [[ristorante|restaurant]], all&#39;[[ospizio|hospice]], alla [[scuola|school]], all&#39;[[ospedale|hospital]], alla [[prigione|jail]], al [[mercato|market]] o al [[laboratorio|laboratory]].
-&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="5" name="PASSAGE TEMPLATE" tags="" position="1950,1150" size="100,100">&lt;% if (s.l === &quot;lo&quot;) { %&gt;
+&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="5" name="PASSAGE TEMPLATE" tags="" position="1900,1000" size="200,100"># TESTI
+
+Testi e scelte differenziati per livello di intelligenza.
+
+&lt;% if (s.l === &quot;lo&quot;) { %&gt;
+Livello intelligenza basso, testo e scelte incomprensibili.
 &lt;% } else if (s.l === &quot;ml&quot;) { %&gt;
+Livello intelligenza medio-basso, testo e scelte intuibili.
 &lt;% } else if (s.l === &quot;mh&quot;) { %&gt;
+Livello intelligenza medio-alto, testo e scelte comprensibili in stile asciutto.
 &lt;% } else if (s.l === &quot;hi&quot;) { %&gt;
-&lt;% } %&gt;</tw-passagedata><tw-passagedata pid="6" name="church" tags="church" position="2175,2650" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="hardware" tags="hardware" position="2675,850" size="100,100"></tw-passagedata><tw-passagedata pid="8" name="restaurant" tags="restaurant" position="1100,875" size="100,100"></tw-passagedata><tw-passagedata pid="9" name="hospice" tags="hospice" position="1725,3200" size="100,100"></tw-passagedata><tw-passagedata pid="10" name="school" tags="school" position="2875,1350" size="100,100"></tw-passagedata><tw-passagedata pid="11" name="hospital" tags="hospital" position="1100,1600" size="100,100"></tw-passagedata><tw-passagedata pid="12" name="jail" tags="jail" position="2850,2950" size="100,100"></tw-passagedata><tw-passagedata pid="13" name="market" tags="market" position="2950,2150" size="100,100"></tw-passagedata><tw-passagedata pid="14" name="laboratory" tags="laboratory" position="1100,2550" size="100,100"></tw-passagedata><tw-passagedata pid="15" name="cemetery" tags="cemetery" position="3025,1350" size="100,100"></tw-passagedata></tw-storydata>
+Livello intelligenza alto, testo e scelte comprensibili con approfondimenti e riflessioni.
+&lt;% } %&gt;
+
+# METODI
+
+Possono essere inseriti all&#39;interno del testo di un passaggio (esempi seguenti) oppure all&#39;interno di un link, es. [[noop|noop][s.debug.noop()]].
+
+## Alimentazione
+
+Mangiare cervelli.
+&lt;% s.gnam() %&gt;
+
+## Eventi traumatici
+
+Colpi a mani nude.
+&lt;% s.bop() %&gt;
+&lt;% s.jab() %&gt;
+&lt;% s.bonk() %&gt;
+&lt;% s.pwam() %&gt;
+&lt;% s.katum() %&gt;
+
+Corpi contundenti.
+&lt;% s.stonk() %&gt;
+&lt;% s.thud() %&gt;
+
+Veleni.
+&lt;% s.glom() %&gt;
+
+Cadute.
+&lt;% s.puf() %&gt;
+&lt;% s.patapum() %&gt;
+
+Colpi d&#39;arma da fuoco.
+&lt;% s.bang() %&gt;
+&lt;% s.pam() %&gt;
+&lt;% s.ratatata() %&gt;
+
+Esplosioni.
+&lt;% s.boom() %&gt;
+&lt;% s.kaboom() %&gt;
+
+# DEBUG
+
+&lt;% s.debug.setIntelligence() %&gt;
+&lt;% s.debug.setHealth() %&gt;
+&lt;% s.debug.noop() %&gt;
+</tw-passagedata><tw-passagedata pid="6" name="church" tags="church" position="2175,2650" size="100,100"></tw-passagedata><tw-passagedata pid="7" name="hardware" tags="hardware" position="2675,850" size="100,100"></tw-passagedata><tw-passagedata pid="8" name="restaurant" tags="restaurant" position="1100,875" size="100,100"></tw-passagedata><tw-passagedata pid="9" name="hospice" tags="hospice" position="1725,3200" size="100,100"></tw-passagedata><tw-passagedata pid="10" name="school" tags="school" position="2875,1350" size="100,100"></tw-passagedata><tw-passagedata pid="11" name="hospital" tags="hospital" position="1100,1600" size="100,100"></tw-passagedata><tw-passagedata pid="12" name="jail" tags="jail" position="2850,2950" size="100,100"></tw-passagedata><tw-passagedata pid="13" name="market" tags="market" position="2950,2150" size="100,100"></tw-passagedata><tw-passagedata pid="14" name="laboratory" tags="laboratory" position="1100,2550" size="100,100"></tw-passagedata><tw-passagedata pid="15" name="cemetery" tags="cemetery" position="3025,1350" size="100,100"></tw-passagedata><tw-passagedata pid="16" name="noop" tags="" position="1950,875" size="100,100">[[PASSAGE TEMPLATE]]</tw-passagedata></tw-storydata>
 		<tw-story>
 			<tw-sidebar>
 				<tw-icon tabindex="0" alt="Undo" title="Undo">↶</tw-icon>
